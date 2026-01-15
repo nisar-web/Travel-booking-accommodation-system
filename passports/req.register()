@@ -1,0 +1,168 @@
+’ll explain ONLY these 2 lines, in very simple English, no jargon.
+
+const newUser = new User({ email, username });
+const registeredUser = await User.register(newUser, password);
+
+1️⃣ First line — creating a User object (NOT saved yet)
+const newUser = new User({ email, username });
+
+What is happening?
+
+User = your mongoose model
+
+new User(...) = creates a user object in memory
+
+🧠 Important:
+
+This user is NOT saved in DB yet
+
+Right now it looks like this in memory only:
+
+{
+  email: "abc@gmail.com",
+  username: "nisar"
+}
+
+
+❌ No password
+❌ No hash
+❌ No salt
+
+Because you never store passwords directly.
+
+2️⃣ Second line — User.register() (THIS IS THE MAGIC)
+const registeredUser = await User.register(newUser, password);
+
+❓ What is register?
+
+👉 register() is NOT your code
+👉 It is added automatically by passport-local-mongoose
+
+So yes:
+
+register is a method (function) added to User
+
+3️⃣ Why do we pass the password here?
+
+Because:
+
+You cannot store password directly
+
+You must hash + salt it
+
+passport-local-mongoose does that securely
+
+What User.register() does internally 👇
+
+When you call:
+
+User.register(newUser, password)
+
+
+It does ALL of this automatically:
+
+Takes the password
+
+Generates a salt
+
+Hashes the password + salt
+
+Stores:
+
+hash
+
+salt
+
+Saves the user to MongoDB
+
+So final DB document becomes:
+
+{
+  _id: ...,
+  email: "abc@gmail.com",
+  username: "nisar",
+  hash: "a8f9d9c7...",
+  salt: "k3j9x..."
+}
+
+
+🚫 Password is never stored
+🚫 Password is never visible
+
+4️⃣ Why didn’t you define username & password in schema?
+
+Because this line:
+
+userSchema.plugin(passportLocalMongoose);
+
+
+Automatically adds:
+
+username
+
+hash
+
+salt
+
+register()
+
+authenticate()
+
+serializeUser()
+
+deserializeUser()
+
+So your schema secretly becomes:
+
+{
+  email,
+  username,
+  hash,
+  salt
+}
+
+5️⃣ What does registeredUser contain?
+const registeredUser = await User.register(...)
+
+
+This returns:
+
+👉 the saved user document from MongoDB
+
+You can log it:
+
+console.log(registeredUser);
+
+6️⃣ One-line summary (MEMORISE THIS)
+
+new User() creates a user object
+User.register() hashes the password, stores it safely, and saves the user
+
+7️⃣ Simple real-life analogy 🧠
+
+Think of User.register() like a bank locker:
+
+You give:
+
+name
+
+password
+
+Bank:
+
+locks password
+
+stores safely
+
+never shows it again
+
+You’re 100% on track now 🔥
+Next concepts to understand (tell me when ready):
+
+passport.authenticate("local")
+
+login vs signup
+
+req.user
+
+how session remembers logged-in user

@@ -1,0 +1,136 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+
+  <div class="row justify-content-center">
+    <div class="col-8 text-center">
+      <h3>Listing Details</h3>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="card col-6 show-card p-0 list-card">
+
+      <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+
+      <div class="card-body">
+        <h5 class="fw-bold"><%= listing.title %></h5>
+        <p>Owned by : <b><%= listing.owner.username %></b></p>
+        <p><%= listing.description %></p>
+        <p>₹<%= listing.price.toLocaleString("en-IN") %></p>
+        <p><%= listing.location %></p>
+        <p><%= listing.country %></p>
+      </div>
+
+      <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
+        <div class="card-body d-flex gap-5">
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark edit-btn">Edit</a>
+
+          <form method="POST" action="/listings/<%= listing.id %>?_method=DELETE">
+            <button class="btn btn-dark">Delete</button>
+          </form>
+        </div>
+      <% } %>
+
+    </div>
+  </div>
+
+  <div class="col-8 offset-3 mt-3 mb-3">
+    <% if (currUser) { %>
+      <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation">
+        <br>
+        <h4>Leave a Review</h4>
+
+        <div class="mt-3 mb-3">
+          <label for="rating" class="form-label">Rating</label>
+
+          <fieldset class="starability-slot">
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
+            <label for="no-rate">No rating</label>
+
+            <input type="radio" id="star5" name="review[rating]" value="5" />
+            <label for="star5">5 stars</label>
+
+            <input type="radio" id="star4" name="review[rating]" value="4" />
+            <label for="star4">4 stars</label>
+
+            <input type="radio" id="star3" name="review[rating]" value="3" />
+            <label for="star3">3 stars</label>
+
+            <input type="radio" id="star2" name="review[rating]" value="2" />
+            <label for="star2">2 stars</label>
+
+            <input type="radio" id="star1" name="review[rating]" value="1" />
+            <label for="star1">1 star</label>
+
+            <span class="starability-focus-ring"></span>
+          </fieldset>
+        </div>
+
+        <div class="mt-3 mb-3">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea
+            name="review[comment]"
+            id="comment"
+            rows="5"
+            class="form-control"
+            required></textarea>
+          <div class="invalid-feedback">Please add some comment</div>
+        </div>
+
+        <button class="btn btn-outline-dark">Submit</button>
+      </form>
+    <% } %>
+
+    <hr>
+
+    <% if (listing.reviews.length > 0) { %>
+      <div class="row">
+        <h4>All Reviews</h4>
+
+        <% for (let review of listing.reviews) { %>
+          <div class="card col-5 ms-3 mb-3">
+            <div class="card-body">
+              <h5 class="card-title">@<%= review.owner.username %></h5>
+              <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+              <p class="card-text"><%= review.comment %></p>
+            </div>
+
+            <form
+              class="mb-2"
+              method="post"
+              action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+              <button class="btn btn-dark">Delete</button>
+            </form>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- MAP -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-6">
+      <div id="my-map" style="height:400px; width:100%;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOKEN MUST COME BEFORE map.js -->
+<script>
+  const map_api_access_token = "<%= process.env.MAP_TOKEN %>";
+  const coordinates = <%- JSON.stringify(//JSON.stringify() converts a JavaScript value (object/array) into a string.
+    listing.geometry && listing.geometry.coordinates
+      ? listing.geometry.coordinates
+      : [80.2707, 13.0827]
+  ) %>;
+   const locationName = "<%= listing.location %>";
+//  <%= %> → escapes output (strings)
+
+// <%- %> → raw output (arrays, objects)
+
+// You MUST use <%- %> for JS arrays.
+</script>
+
+<script src="/js/map.js"></script>
