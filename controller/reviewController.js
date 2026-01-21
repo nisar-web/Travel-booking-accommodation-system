@@ -3,6 +3,24 @@ const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
 
 // CREATE REVIEW
+// module.exports.createReview = async (req, res) => {
+//   const listing = await Listing.findById(req.params.id);
+//   if (!listing) {
+//     throw new ExpressError(404, "Listing not found");
+//   }
+
+//   const newReview = new Review(req.body.review);
+//   newReview.owner = req.user._id;
+
+//   listing.reviews.push(newReview);
+
+//   await newReview.save();
+//   await listing.save();
+
+//   req.flash("success", "Rating added successfully");
+//   res.redirect(`/listings/${listing._id}`);
+// };
+
 module.exports.createReview = async (req, res) => {
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
@@ -12,10 +30,11 @@ module.exports.createReview = async (req, res) => {
   const newReview = new Review(req.body.review);
   newReview.owner = req.user._id;
 
-  listing.reviews.push(newReview);
-
   await newReview.save();
-  await listing.save();
+
+  await Listing.findByIdAndUpdate(listing._id, {
+    $push: { reviews: newReview._id }
+  });
 
   req.flash("success", "Rating added successfully");
   res.redirect(`/listings/${listing._id}`);

@@ -89,19 +89,20 @@
         <h4>All Reviews</h4>
 
         <% for (let review of listing.reviews) { %>
-          <div class="card col-5 ms-3 mb-3">
-            <div class="card-body">
+          <div class="card col-12 col-md-5 ms-md-3 mb-3" >
+            <div class="card-body reviewbox">
               <h5 class="card-title">@<%= review.owner.username %></h5>
               <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
               <p class="card-text"><%= review.comment %></p>
             </div>
-
+           <%if(currUser && review.owner && review.owner._id.toString() === currUser._id.toString()){%>
             <form
               class="mb-2"
               method="post"
               action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
               <button class="btn btn-dark">Delete</button>
             </form>
+            <%}%>
           </div>
         <% } %>
       </div>

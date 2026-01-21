@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname,"/public")))
 
 // this store session related information ,in atlas db so that my user who visit website eill be nvere relogin for 14 days
  const store =  MongoStore.create({
-  mongoUrl: atlasDB,
+  mongoUrl: mongourl,
   secret: process.env.SECRET,
   touchAfter: 24 * 3600,
 });
@@ -76,10 +76,12 @@ passport.deserializeUser(User.deserializeUser())
 
 main().then(()=>{
     console.log("connection to db")
+}).catch((err)=>{
+  console.log("not connected")
 })
 
 async function main() {
-   await mongoose.connect(atlasDB);    
+   await mongoose.connect(mongourl);    
 }
 // app.get("/testListing", async(req,res)=>{
 //     let sampleListing= new Listing({

@@ -18,9 +18,32 @@ async function geocodeLocation(location) {
 
 
 module.exports.index=async(req,res)=>{
-    let alllistings=await Listing.find({});
-    res.render("listings/index.ejs",{alllistings})
+    let alllistings=await Listing.find({});    
+      res.render("listings/index", { alllistings, searchQuery: null }); // pass null if not searching
+   
 }
+  module.exports.search=async(req,res)=>{
+        const { query } = req.query;
+if (!query) {
+   req.flash("error","listing not found based on the given location")
+  return res.redirect("/listings");
+}
+
+// Split user input by space
+const searchWords = query.split(" ").filter(Boolean);
+
+const searchQuery = searchWords.map(word => ({
+  $or: [
+    { location: { $regex: word, $options: "i" } },
+    { country: { $regex: word, $options: "i" } }
+  ]
+}));
+
+const alllistings = await Listing.find({ $and: searchQuery });
+
+         res.render("listings/index", { alllistings, searchQuery: query });
+
+  }
 module.exports.addNewListing=(req,res)=>{
     res.render("listings/new.ejs")
 }
@@ -138,9 +161,12 @@ module.exports.updateListing=async (req, res) => {
     res.redirect(`/listings/${id}`);
   }
 
+
+
   module.exports.destoryListing=async(req,res)=>{
       let {id}=req.params;
       let deleteList=await Listing.findByIdAndDelete(id)
         req.flash("success","Listing Deleted")
        res.redirect("/listings");
   }
+

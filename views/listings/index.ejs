@@ -97,6 +97,9 @@
 </div>
 
 </div>
+<% if (searchQuery) { %>
+  <h5>Showing results for "<%= searchQuery %>"</h5>
+<% } %>
 
    
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-4">
@@ -119,6 +122,12 @@
  <%}%>
  </div>
 
+
+
+
+
+
+
  <script>
    let ToggleBtn=document.getElementById("flexSwitchCheckDefault");
    ToggleBtn.addEventListener("click",()=>{
@@ -135,3 +144,4 @@
  </script>
 
    
+

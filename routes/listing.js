@@ -18,6 +18,7 @@ router
 
   )
   
+  router.get("/search",wrapAsync(listingController.search))
 
 
 //new route
@@ -39,10 +40,10 @@ router
 // Edit form route
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.editListing));
 
-//update route
 
-//http://localhost:8080/listings/695800d5780f70ba199fe8c8?_method=PUT
-//delete route
+// routes/listings.js
+
+
 module.exports=router;
 
 
@@ -57,4 +58,3 @@ module.exports=router;
 //     next(err);
 //  }
 // })
-router

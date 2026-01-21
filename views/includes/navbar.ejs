@@ -1,106 +1,72 @@
-<style>
- .airbnb-search-wrapper {
-  width: 100%;
-  padding: 0 12px; /* mobile padding */
-  display: flex;
-  justify-content: center;
-}
 
-.airbnb-search {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  padding: 6px;
-  width: 100%;
-  max-width: 520px;   /* desktop width */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.search-input {
-  border: none;
-  outline: none;
-  padding: 10px 14px;
-  flex: 1;
-  min-width: 0;   /* 🔥 VERY IMPORTANT for small screens */
-  font-size: 14px;
-  border-radius: 999px;
-}
-
-.search-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #ff385c;
-  color: #fff;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap; /* prevent breaking */
-}
-
-.search-btn i {
-  font-size: 14px;
-}
-/* gWau2zK4j57VWMMy */
-/* vbkTxy5WcSORhPLw */
-
-/* mongodb+srv://greeksforgnisar_db_user:gWau2zK4j57VWMMy@cluster0.zhtokdg.mongodb.net/?appName=Cluster0 */
-
-/* mongodb+srv://greeksforgnisar_db_user:vbkTxy5WcSORhPLwcluster0.zhtokdg.mongodb.net/?appName=Cluster0 */
-</style>
 
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" ><i class="fa-solid fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+    <!-- BRAND -->
+    <a class="navbar-brand">
+      <i class="fa-solid fa-compass"></i>
+    </a>
+
+    <!-- TOGGLER -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        
+
+    <!-- COLLAPSE START -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      <!-- LEFT LINKS -->
+      <ul class="navbar-nav me-md-3 text-center">
         <li class="nav-item">
           <a class="nav-link" href="/listings">Explore</a>
         </li>
-        
       </ul>
-          <div class="airbnb-search-wrapper">
-  <div class="airbnb-search">
-    <input
-      type="text"
-      placeholder="Search destinations"
-      class="search-input"
-    />
-    <button class="search-btn">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <span>Search</span>
-    </button>
-  </div>
-</div>
 
-
-    </div>
-  </div>
-       <div class="collapse navbar-collapse ms-auto" id="navbarNav" >
-      <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/listings/new">Become a host</a>  
-        <% if(!currUser) {%>
-           
-          <a class="nav-link"  href="/signup"><b>SignnUp</b></a>
+      <!-- SEARCH -->
         
-       
-          <a class="nav-link" href="/login"><b>Login</b></a>
-       
-        <%}%>
-        <% if(currUser){%>
+      <div class="airbnb-search-wrapper my-2 my-md-0">
+    <form action="/listings/search" method="get">
+        <div class="airbnb-search">
+           
+          <input
+            type="text"
+            placeholder="Search destinations"
+            name="query"
+            class="search-input"
+          />
          
-          <a class="nav-link" href="/logout"><b>Logout</b></a>
-     
-        <%}%>
+          <button class="search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+          
+        </div>
+        </form>
       </div>
+      
+
+      <!-- RIGHT LINKS -->
+      <div class="navbar-nav ms-md-auto text-center">
+        <a class="nav-link" href="/listings/new">Become a host</a>
+
+        <% if(!currUser) { %>
+          <a class="nav-link" href="/signup"><b>Signup</b></a>
+          <a class="nav-link" href="/login"><b>Login</b></a>
+        <% } %>
+
+        <% if(currUser) { %>
+          <a class="nav-link" href="/logout"><b>Logout</b></a>
+        <% } %>
+      </div>
+
     </div>
+    <!-- COLLAPSE END -->
+
   </div>
 </nav>
