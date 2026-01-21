@@ -81,7 +81,7 @@ main().then(()=>{
 })
 
 async function main() {
-   await mongoose.connect(mongourl);    
+   await mongoose.connect(atlasDB);    
 }
 // app.get("/testListing", async(req,res)=>{
 //     let sampleListing= new Listing({
@@ -99,7 +99,7 @@ async function main() {
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success")
     res.locals.error=req.flash("error")
-    res.locals.currUser=req.user;
+    res.locals.currUser=req.user||null
     next();
 })
 
