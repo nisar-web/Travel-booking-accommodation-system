@@ -72,8 +72,8 @@ module.exports.validateReview = (req, res, next) => {
     return next(new ExpressError(400, "Review data is required"));
   }
 
-  // 🧪 Joi validation
-  let { error } = reviewSchema.validate(req.body, { abortEarly: false });
+ // 🧪 Validate only the review object
+  let { error } = reviewSchema.validate({ review: req.body.review }, { abortEarly: false });
 
   if (error) {
     let errMsg = error.details.map(el => el.message).join(", ");

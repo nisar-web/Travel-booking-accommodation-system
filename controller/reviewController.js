@@ -31,11 +31,11 @@ module.exports.createReview = async (req, res) => {
   newReview.owner = req.user._id;
 
   await newReview.save();
-
+  console.log(req.body.review)
   await Listing.findByIdAndUpdate(listing._id, {
     $push: { reviews: newReview._id }
   });
-
+  
   req.flash("success", "Rating added successfully");
   res.redirect(`/listings/${listing._id}`);
 };
