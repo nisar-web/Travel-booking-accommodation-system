@@ -22,6 +22,7 @@ module.exports.index=async(req,res)=>{
       res.render("listings/index", { alllistings, searchQuery: null }); // pass null if not searching
    
 }
+// see this revison docs under project  1 folder and store it in a file name /serach logic
   module.exports.search=async(req,res)=>{
         const { query } = req.query;
 if (!query) {

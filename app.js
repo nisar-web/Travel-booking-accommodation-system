@@ -19,6 +19,7 @@ const flash=require("connect-flash");
 //passport is express compataible authenthecation middleware for nodejs
 //passport-local is strategy used for authecate user by getting thier username and info
 //passport-local-mongoose automatically adds the username paswoord which salted and hashed ,also it adds the instance and static methods to the docs(obj of that model)
+const indexroute=require("./routes/index.js")
 const listingRoute=require("./routes/listing.js")
 const reviewRoute=require("./routes/review.js")
 const userRoute=require("./routes/user.js")
@@ -127,6 +128,7 @@ app.use((req,res,next)=>{
 
 // The middleware does NOT magically know messages.
 // Flash messages were stored earlier in the session, and the middleware only reads them on the next request before rendering.
+app.use("/",indexroute);
 app.use("/listings",listingRoute);
 
 app.use("/listings/:id/reviews",reviewRoute);
