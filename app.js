@@ -5,12 +5,12 @@ const express=require("express")
 const app = express();
 const mongoose=require("mongoose");
 const path=require("path") 
-const mongourl="mongodb://127.0.0.1:27017/wanderlust";
+//const mongourl="mongodb://127.0.0.1:27017/wanderlust";
 const methodOverride=require("method-override")
 const ejsMate=require("ejs-mate")
 const ExpressError= require("./utils/ExpressError.js");
 
-const atlasDB=process.env.ATLASDB_URL
+const atlasDB=process.env.ATLASDB_URL;
 
 
 const session =require("express-session")
@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname,"/public")))
 
 // this store session related information ,in atlas db so that my user who visit website eill be nvere relogin for 14 days
  const store =  MongoStore.create({
-  mongoUrl: mongourl,
+  mongoUrl: atlasDB,
   secret: process.env.SECRET,
   touchAfter: 24 * 3600,
 });
@@ -75,7 +75,7 @@ passport.deserializeUser(User.deserializeUser())
 //UNDERSTAND THIS  ABOVE 3 INES OF CODE IN THE FILE NAME ELEVEN 011
 
 main().then(()=>{
-    console.log("connection to db")
+    console.log("connection to atlasdb")
 }).catch((err)=>{
   console.log("not connected")
 })
